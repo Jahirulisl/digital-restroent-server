@@ -38,9 +38,18 @@ async function run() {
     app.get('/menu', async(req,res)=>{
       const result = await menuCollection.find().toArray();
       res.send(result);
-    } )
+    } );
     //for menu data cellection end
 
+    //for revwes data cellection start
+   const reviewCollection = client.db("digital-restruant").collection("review");
+
+   app.get('/review', async(req,res)=>{
+      const result = await menuCollection.find().toArray();
+      res.send(result);
+    } )
+
+   //for revwes data cellection end
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
