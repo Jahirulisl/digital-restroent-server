@@ -42,14 +42,32 @@ async function run() {
     //for menu data cellection end
 
     //for revwes data cellection start
-   const reviewCollection = client.db("digital-restruant").collection("review");
+   const reviewCollection = client.db("digital-restruant").collection("reviews");
 
    app.get('/review', async(req,res)=>{
-      const result = await menuCollection.find().toArray();
+      const result = await reviewCollection.find().toArray();
       res.send(result);
     } )
 
    //for revwes data cellection end
+
+    //for cart data cellection start
+   const cartCollection = client.db("digital-restruant").collection("cart");
+
+
+         //carta data loade st
+  app.get('/carts', async(req,res)=>{
+    const result = await cartCollection.find().toArray();
+    res.send(result);
+  })
+        //carts cellection post
+   app.post('/carts', async(req,res)=>{
+    const cartItem = req.body;
+    const result = await cartCollection.insertOne(cartItem);
+    res.send(result);
+   })
+   //for cart data cellection end
+   
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -62,7 +80,6 @@ run().catch(console.dir);
 
 //FOR CENNECT BY MONGODB END
 
-
 app.get('/',(req,res) => {
   res.send('boss is sitting')
 });
@@ -70,3 +87,15 @@ app.get('/',(req,res) => {
 app.listen(port, () => {
   console.log(`Bstro boss is sitting on port ${port}`);
 })
+
+
+/**
+ *--------------------------------
+   MANAGEING CONVENTION
+*----------------------------------
+*app.get("/users")
+*app.get("/users/:id")
+*app.post('/users')
+
+ * 
+*/
