@@ -53,8 +53,6 @@ async function run() {
 
     //for cart data cellection start
     const cartCollection = client.db("digital-restruant").collection("cart");
-
-
     //carta data loade st
     app.get('/carts', async (req, res) => {
       //for recive Email start
@@ -70,9 +68,9 @@ async function run() {
       const result = await cartCollection.insertOne(cartItem);
       res.send(result);
     })
-    //for cart data cellection end
-
-    //fro make delete api start>
+    //for cart data cellection and api end
+  
+    //fro make cart delete api start>
    app.delete('/carts/:id',async(req,res)=>{
     const id = req.params.id;
     const query = {_id: new ObjectId(id)};
@@ -80,6 +78,17 @@ async function run() {
     res.send(result);
    })
     //fro make delete api end>
+
+    //for make user data cellection and store api start
+    const userCollection = client.db("digital-restruant").collection("users");
+       //for api
+   app.post('/users',async (req, res)=>{
+    const user = req.body;
+    const result = await userCollection.insertOne(user);
+    res.send(result);
+   })    
+
+    //for make user data cellection store api end
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
