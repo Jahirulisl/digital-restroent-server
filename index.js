@@ -69,31 +69,37 @@ async function run() {
       res.send(result);
     })
     //for cart data cellection and api end
-  
+
     //fro make cart delete api start>
-   app.delete('/carts/:id',async(req,res)=>{
-    const id = req.params.id;
-    const query = {_id: new ObjectId(id)};
-    const result = await cartCollection.deleteOne(query);
-    res.send(result);
-   })
+    app.delete('/carts/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    })
     //fro make delete api end>
 
     //for make user data cellection and store api start
     const userCollection = client.db("digital-restruant").collection("users");
-       //for api
-   app.post('/users',async (req, res)=>{
-    const user = req.body;
-    //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking) str
-    const query ={email:user.email};
-    const existingUser = await userCollection.findOne(query);
-    if(existingUser){
-      return res.send({messege:'user already exists',insertedId:null})
-    }
-    //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking)end
-    const result = await userCollection.insertOne(user);
-    res.send(result);
-   })    
+    //for api
+    //for get apistart
+    app.get('/users', async (req, res) => {
+      const result = await cartCollection.find().toArray();
+      res.send(result);
+    });
+    //for get api end
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking) str
+      const query = { email: user.email };
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ messege: 'user already exists', insertedId: null })
+      }
+      //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking)end
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
     //for make user data cellection store api end
 
     // Send a ping to confirm a successful connection
