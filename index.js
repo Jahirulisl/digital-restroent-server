@@ -82,12 +82,12 @@ async function run() {
     //for make user data cellection and store api start
     const userCollection = client.db("digital-restruant").collection("users");
     //for api
-    //for get apistart
+    //for get user apistart
     app.get('/users', async (req, res) => {
-      const result = await cartCollection.find().toArray();
+      const result = await userCollection.find().toArray();
       res.send(result);
     });
-    //for get api end
+    //for get user api end
     app.post('/users', async (req, res) => {
       const user = req.body;
       //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking) str
@@ -100,6 +100,14 @@ async function run() {
       const result = await userCollection.insertOne(user);
       res.send(result);
     })
+    //make user delete api start
+    app.delete('/users/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+    })
+    //make user delete api end
     //for make user data cellection store api end
 
     // Send a ping to confirm a successful connection
