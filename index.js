@@ -130,6 +130,23 @@ async function run() {
       res.send(result);
     });
     //for get user api end
+
+    //for get user admin api start>
+   app.get('/user/admin/:email',verifyToken, async (req, res) =>{
+   const email = req.params.email;
+   if(email !== req.decoded.email){
+    return res.status(403).send({message: 'unauthorized access'})
+   }
+   const query = {email:email};
+   const user = await userCollection.findOne(query);
+   let admin = false;
+   if(user){
+    admin = user?.role === 'admin';
+   }
+   res.send({admin});
+   })
+    //for get user admin api end>
+    
     app.post('/users', async (req, res) => {
       const user = req.body;
       //you can do this many ways (1.email uniqe,2.upsert, 3.simple checking) str
