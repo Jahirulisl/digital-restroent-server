@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
+//make jswon token start paret 1
+const jwt = require('jsonwebtoken');
+//make jswon token end paret 1
 
 //from .env start 
 require('dotenv').config()
@@ -90,9 +93,15 @@ async function run() {
       const result = await userCollection.updateOne(filter, updateDoc)
       res.send(result);
     })
-
-
-    //for user admin make start>
+    //for user admin make end>
+  
+    //for jwt token api start 2
+    app.post('/jwt',async(req, res)=>{
+    const user = req.bady;
+    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn:'1h'});
+    res.send({token});
+  })
+    //for jwt token api END 2
 
     //for make user data cellection and store api start
     const userCollection = client.db("digital-restruant").collection("users");
