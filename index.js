@@ -52,6 +52,12 @@ async function run() {
     });
     //for menu data get end
 
+    app.post('/menu', async (req,res)=>{
+      const item = req.body;
+      const result = await menuCollection.insertOne(item)
+      res.send(result);
+    })
+
      //for revwes data get start
     app.get('/review', async (req, res) => {
       const result = await reviewCollection.find().toArray();
