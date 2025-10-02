@@ -67,13 +67,20 @@ async function run() {
       //for make user data cellection and store api start
     const userCollection = client.db("digital-restruant").collection("users");
     //for make user data cellection and store api start
-
+    
+    //for jwt token make api start 2
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+      res.send({ token });
+    })
+    //for jwt token  make api END 2
 
      //make middle weres for varify token start
     const verifyToken = (req, res, next) => {
-      console.log('inside verify token',req.headers.authorization);
+      // console.log('inside verify token',req.headers.authorization);
       if(!req.headers.authorization){
-        return res.status(401).send({messege: 'forbidden access'});
+        return res.status(401).send({messege: 'authorizaed access'});
       }
       const token = req.headers.authorization.split(' ')[1] ;
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) =>{
@@ -95,8 +102,7 @@ async function run() {
     const isAdmin = user?.role === 'admin';
     if(!isAdmin){
       return res.status(403).send({message: 'forbidden access'});
-      console.log("decoded email:", req.decoded.email);
-
+      // console.log("decoded email:", req.decoded.email);
     }
     next();
    }
@@ -145,18 +151,6 @@ async function run() {
     })
     //for user admin make end>
 
-    //for jwt token api start 2
-    app.post('/jwt', async (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-      res.send({ token });
-    })
-    //for jwt token api END 2
-
-   
-    //for api
-   
-
     //for get user apistart
     app.get('/users',verifyToken,verifyAdmin, async (req, res) => {
       const result = await userCollection.find().toArray();
@@ -165,7 +159,7 @@ async function run() {
     //for get user api end
 
     //for get user admin api start>
-   app.get('/users/admin/:email',verifyToken,verifyAdmin, async (req, res) =>{
+   app.get('/users/admin/:email',verifyToken, async (req, res) =>{
    const email = req.params.email;
    if(email !== req.decoded.email){
     return res.status(403).send({message: 'unauthorized access'})
@@ -176,7 +170,7 @@ async function run() {
    if(user){
     admin = user?.role === 'admin';
    }
-   res.send({admin});
+   res.send({ admin });
    })
     //for get user admin api end>
 
