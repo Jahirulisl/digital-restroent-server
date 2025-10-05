@@ -42,47 +42,7 @@ async function run() {
     const reviewCollection = client.db("digital-restruant").collection("reviews");
     //for revwes data cellection end
 
-
-
-
-    //for menu data get start
-    app.get('/menu', async (req, res) => {
-      const result = await menuCollection.find().toArray();
-      res.send(result);
-    });
-    //for menu data get end
-
-    app.post('/menu', async (req,res)=>{
-      const item = req.body;
-      const result = await menuCollection.insertOne(item)
-      res.send(result);
-    })
-
-     //for revwes data get start
-    app.get('/review', async (req, res) => {
-      const result = await reviewCollection.find().toArray();
-      res.send(result);
-    })
-   //for revwes  data get end
-   
-
-    //for cart data cellection start
-    const cartCollection = client.db("digital-restruant").collection("cart");
-     //for cart data cellection and api end
-
-      //for make user data cellection and store api start
-    const userCollection = client.db("digital-restruant").collection("users");
-    //for make user data cellection and store api start
-    
-    //for jwt token make api start 2
-    app.post('/jwt', async (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-      res.send({ token });
-    })
-    //for jwt token  make api END 2
-
-     //make middle weres for varify token start
+   //make middle weres for varify token start
     const verifyToken = (req, res, next) => {
       // console.log('inside verify token',req.headers.authorization);
       if(!req.headers.authorization){
@@ -113,6 +73,48 @@ async function run() {
     next();
    }
    //use verify admin after verify token end
+
+
+    //for menu data get start
+    app.get('/menu', async (req, res) => {
+      const result = await menuCollection.find().toArray();
+      res.send(result);
+    });
+    //for menu data get end
+    
+    //for addmenu post api server start
+    app.post('/menu', verifyToken,verifyAdmin,async (req,res)=>{
+      const item = req.body;
+      const result = await menuCollection.insertOne(item)
+      res.send(result);
+    })
+     //for addmenu post api server start
+
+     //for revwes data get start
+    app.get('/review', async (req, res) => {
+      const result = await reviewCollection.find().toArray();
+      res.send(result);
+    })
+   //for revwes  data get end
+   
+
+    //for cart data cellection start
+    const cartCollection = client.db("digital-restruant").collection("cart");
+     //for cart data cellection and api end
+
+      //for make user data cellection and store api start
+    const userCollection = client.db("digital-restruant").collection("users");
+    //for make user data cellection and store api start
+    
+    //for jwt token make api start 2
+    app.post('/jwt', async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+      res.send({ token });
+    })
+    //for jwt token  make api END 2
+
+    
 
     //carta data  get loade st
     app.get('/carts', async (req, res) => {
