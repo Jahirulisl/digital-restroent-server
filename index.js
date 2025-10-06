@@ -66,6 +66,7 @@ async function run() {
     const query = {email:email};
     const user = await userCollection.findOne(query);
     const isAdmin = user?.role === 'admin';
+    console.log('Admin check:', email, isAdmin);
     if(!isAdmin){
       return res.status(403).send({message: 'forbidden access'});
       // console.log("decoded email:", req.decoded.email);
@@ -89,6 +90,16 @@ async function run() {
       res.send(result);
     })
      //for addmenu post api server start
+
+      //make menu delite api start
+    app.delete('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: id };
+      const result = await menuCollection.deleteOne(query);
+      res.send(result);
+    })
+    //make menu delite api end
+
 
      //for revwes data get start
     app.get('/review', async (req, res) => {
