@@ -91,6 +91,15 @@ async function run() {
     })
      //for addmenu post api server start
 
+     //make menu update api  to get soecpic id start
+    app.get('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: id };
+      const result = await menuCollection.findOne(query);
+      res.send(result);
+    })
+    //make menu update api  to get soecpic id end
+
       //make menu delite api start
     app.delete('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
