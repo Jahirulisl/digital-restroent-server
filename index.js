@@ -100,6 +100,26 @@ async function run() {
     })
     //make menu update api  to get soecpic id end
 
+    //for update menu patch api start
+   app.patch('/menu/:id',async(req, res) =>{
+    const id = req.params.id; 
+    const item = req.body;
+    const filter = { _id: id };
+    const updateDoc = {
+      $set:{
+        name:item.name,
+        category:item.category,
+        price:item.price,
+        recipe:item.recipe,
+        image: item.image
+      }
+    }
+    const result = await menuCollection.updateOne(filter, updateDoc)
+    res.send(result);
+   })
+
+    //for update menu patch api end
+
       //make menu delite api start
     app.delete('/menu/:id', verifyToken, verifyAdmin, async (req, res) => {
       const id = req.params.id;
