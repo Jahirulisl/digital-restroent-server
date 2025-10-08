@@ -7,19 +7,13 @@ const jwt = require('jsonwebtoken');
 
 //from .env start 
 require('dotenv').config()
-
-
 const port = process.env.PORT || 5000;
-
 //middlewares start >
 app.use(cors());
 app.use(express.json());
-
 //FOR CENNECT BY MONGODB START
-
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.i5ort.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -28,10 +22,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-
 async function run() {
   try {
-
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
@@ -56,7 +48,6 @@ async function run() {
        req.decoded = decoded;
        next();
       })
-      
     }
     //make middle weres for varify token end
 
@@ -74,8 +65,6 @@ async function run() {
     next();
    }
    //use verify admin after verify token end
-
-
     //for menu data get start
     app.get('/menu', async (req, res) => {
       const result = await menuCollection.find().toArray();
@@ -117,7 +106,6 @@ async function run() {
     const result = await menuCollection.updateOne(filter, updateDoc)
     res.send(result);
    })
-
     //for update menu patch api end
 
       //make menu delite api start
@@ -129,7 +117,6 @@ async function run() {
     })
     //make menu delite api end
 
-
      //for revwes data get start
     app.get('/review', async (req, res) => {
       const result = await reviewCollection.find().toArray();
@@ -137,7 +124,6 @@ async function run() {
     })
    //for revwes  data get end
    
-
     //for cart data cellection start
     const cartCollection = client.db("digital-restruant").collection("cart");
      //for cart data cellection and api end
@@ -153,8 +139,6 @@ async function run() {
       res.send({ token });
     })
     //for jwt token  make api END 2
-
-    
 
     //carta data  get loade st
     app.get('/carts', async (req, res) => {
@@ -175,8 +159,7 @@ async function run() {
     })
     //carts cellection post end
    
-
-    //fro make cart delete api start>
+    //fro make cart delete api start
     app.delete('/carts/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
