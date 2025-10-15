@@ -33,6 +33,13 @@ async function run() {
       //for revwes data cellection start
     const reviewCollection = client.db("digital-restruant").collection("reviews");
     //for revwes data cellection end
+     //for cart data cellection start
+    const cartCollection = client.db("digital-restruant").collection("cart");
+     //for cart data cellection and api end
+
+      //for make user data cellection and store api start
+    const userCollection = client.db("digital-restruant").collection("users");
+    //for make user data cellection and store api start
 
    //make middle weres for varify token start
     const verifyToken = (req, res, next) => {
@@ -124,14 +131,6 @@ async function run() {
     })
    //for revwes  data get end
    
-    //for cart data cellection start
-    const cartCollection = client.db("digital-restruant").collection("cart");
-     //for cart data cellection and api end
-
-      //for make user data cellection and store api start
-    const userCollection = client.db("digital-restruant").collection("users");
-    //for make user data cellection and store api start
-    
     //for jwt token make api start 2
     app.post('/jwt', async (req, res) => {
       const user = req.body;
@@ -141,14 +140,15 @@ async function run() {
     //for jwt token  make api END 2
 
     //carta data  get loade st
-    app.get('/carts', async (req, res) => {
-      //for recive Email start
-      const email = req.query.email;
-      const query = { email: email };
-      //for recive Email end
-      const result = await cartCollection.find(query).toArray();
-      res.send(result);
-    })
+   app.get('/carts', async (req, res) => {
+  const email = req.query.email;
+  let query = {};
+  if (email) {
+    query = { email: email };
+  }
+  const result = await cartCollection.find(query).toArray();
+  res.send(result);
+})
     //carta data  get loade end
 
     //carts cellection post start
